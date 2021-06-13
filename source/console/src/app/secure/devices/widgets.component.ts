@@ -29,7 +29,7 @@ export class WidgetsComponent implements OnInit, OnDestroy { // implements Logge
     private profile: ProfileInfo;
     public devices: Device[] = [];
     public deviceTypes: DeviceType[] = [];
-    private allSelected: boolean = false;
+    public allSelected: boolean = false;
     private pollerInterval: any = null;
     public widgetRequest: WidgetRequest = new WidgetRequest();
     public provisionCountError: boolean = false;

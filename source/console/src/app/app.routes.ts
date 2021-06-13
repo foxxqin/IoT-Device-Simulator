@@ -15,6 +15,7 @@ import { LogoutComponent, RegistrationConfirmationComponent } from './public/aut
 import { ResendCodeComponent } from './public/auth/resend/resendCode.component';
 import { NewPasswordComponent } from './public/auth/newpassword/newpassword.component';
 import { MyDevicesComponent } from './secure/devices/mydevices.component';
+import { MyLogsComponent } from './secure/devices/mylogs.component';
 import { WidgetsComponent } from './secure/devices/widgets.component';
 import { WidgetComponent } from './secure/devices/widget.component';
 import { DeviceTypesComponent } from './secure/devices/types.component';
@@ -58,6 +59,7 @@ const secureHomeRoutes: Routes = [
             { path: 'admin/users/:username', component: UserComponent },
             { path: 'admin/settings', component: SettingsComponent },
             { path: 'devices', component: MyDevicesComponent },
+            { path: 'logs', component: MyLogsComponent },
             { path: 'general', component: WidgetsComponent },
             { path: 'general/:deviceId', component: WidgetComponent },
             { path: 'automotive', component: FleetComponent },

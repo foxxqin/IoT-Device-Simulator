@@ -28,7 +28,7 @@ export class FleetComponent implements OnInit, OnDestroy {
     public deviceStats: any = {};
     private profile: ProfileInfo;
     public fleet: Device[] = [];
-    private allSelected: boolean = false;
+    public allSelected: boolean = false;
     public widgetRequest: WidgetRequest = new WidgetRequest();
     private pollerInterval: any = null;
     public provisionCountError: boolean = false;

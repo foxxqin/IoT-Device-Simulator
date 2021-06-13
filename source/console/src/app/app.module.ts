@@ -20,6 +20,7 @@ import { UsersComponent } from './secure/admin/users/users.component';
 import { UserComponent } from './secure/admin/users/user.component';
 import { SettingsComponent } from './secure/admin/settings/settings.component';
 import { MyDevicesComponent } from './secure/devices/mydevices.component';
+import { MyLogsComponent } from './secure/devices/mylogs.component';
 import { WidgetsComponent } from './secure/devices/widgets.component';
 import { WidgetComponent } from './secure/devices/widget.component';
 import { DeviceTypesComponent } from './secure/devices/types.component';
@@ -58,6 +59,7 @@ import { BlockUIModule } from 'ng-block-ui';
         UsersComponent,
         UserComponent,
         MyDevicesComponent,
+        MyLogsComponent,
         ProfileComponent,
         FleetComponent,
         CustomizeAutomotiveComponent,

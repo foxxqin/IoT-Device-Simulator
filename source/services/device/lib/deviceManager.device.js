@@ -88,6 +88,32 @@ class DeviceManager {
     }
 
     /**
+     * Get logs for the user.
+     * @param {JSON} ticket - authorization ticket.
+     */
+    getLogs(ticket) {
+        const _self = this;
+        return new Promise((resolve, reject) => {
+
+            Logger.log(Logger.levels.INFO, `Attempting to list logs for user ${ticket.userid}`);
+
+            _self._getDeviceLog(ticket).then((logs) => {
+                // console.log(devices)
+                resolve(logs);
+            }).catch((err) => {
+                Logger.error(Logger.levels.INFO, err);
+                Logger.error(Logger.levels.INFO, `Error occurred while attempting to retrieve logs for user ${ticket.userid}.`);
+                reject({
+                    code: 500,
+                    error: 'DeviceLogRetrievalFailure',
+                    message: err
+                });
+            });
+
+        });
+    }
+
+    /**
      * Retrieves a user's device widget statistics.
      * @param {JSON} ticket - authentication ticket
      */
@@ -354,6 +380,15 @@ class DeviceManager {
                             // _updateParams.Item.stage = 'provisioning';
                             _self._queueSimulatorAction(_body).then((resp) => {
                                 Logger.log(Logger.levels.INFO, resp);
+                                let _log = {
+                                    userId: ticket.userid,
+                                    createdAt: moment().utc().format(),
+                                    id: deviceId,
+                                    action: newDevice.operation,
+                                    category: device.Item.category,
+                                    subCategory: device.Item.subCategory
+                                };
+                                _self._saveLog(_log);
                                 _self._saveDevice(device.Item).then((resp) => {
                                     return resolve(device.Item);
                                 }).catch((err) => {
@@ -372,7 +407,15 @@ class DeviceManager {
                             if (newDevice.operation === 'stop' && device.Item.stage === 'hydrated') {
                                 device.Item.stage = 'stopping';
                             }
-
+                            let _log = {
+                                userId: ticket.userid,
+                                createdAt: moment().utc().format(),
+                                id: deviceId,
+                                action: newDevice.operation,
+                                category: device.Item.category,
+                                subCategory: device.Item.subCategory
+                            };
+                            _self._saveLog(_log);
                             _self._saveDevice(device.Item).then((resp) => {
                                 return resolve(device.Item);
                             }).catch((err) => {
@@ -385,6 +428,15 @@ class DeviceManager {
                             });
                         }
                     } else {
+                        let _log = {
+                            userId: ticket.userid,
+                            createdAt: moment().utc().format(),
+                            id: deviceId,
+                            action: newDevice.operation,
+                            category: device.Item.category,
+                            subCategory: device.Item.subCategory
+                        };
+                        _self._saveLog(_log);
                         _self._saveDevice(device.Item).then((resp) => {
                             return resolve(device.Item);
                         }).catch((err) => {
@@ -429,6 +481,16 @@ class DeviceManager {
                 }
             });
         });
+    }
+
+    async _saveLog(log) {
+        const _self = this;
+        let _params = {
+            TableName: process.env.LOG_TBL,
+            Item: log
+        };
+        let docClient = new AWS.DynamoDB.DocumentClient(_self.dynamoConfig);
+        await docClient.put(_params).promise();
     }
 
     /**
@@ -807,6 +869,37 @@ class DeviceManager {
 
         });
 
+    }
+
+    /**
+     * Get device logs page for the user.
+     * @param {JSON} ticket - authorization ticket.
+     */
+     _getDeviceLog(ticket) {
+        const _self = this;
+        return new Promise((resolve, reject) => {
+
+            let _keyfilter = 'userId = :uid';
+            let _expression = {
+                ':uid': ticket.userid
+            };
+
+            let params = {
+                TableName: process.env.LOG_TBL,
+                KeyConditionExpression: _keyfilter,
+                ExpressionAttributeValues: _expression,
+                Limit: 100
+            };
+
+            let docClient = new AWS.DynamoDB.DocumentClient(_self.dynamoConfig);
+            docClient.query(params, function (err, result) {
+                if (err) {
+                    Logger.error(Logger.levels.INFO, err);
+                    return reject(`Error occurred while attempting to retrieve log from logs.`);
+                }
+                return resolve(result.Items);
+            });
+        });
     }
 
     _collatePage(items, collatedResults, targetPage) {

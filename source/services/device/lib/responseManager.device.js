@@ -177,6 +177,14 @@ class ResponseManager {
                 }).catch((err) => {
                     reject(this._processResponse(err.code, err, _operation));
                 });
+            } else if (event.resource === '/devices/logs' && event.httpMethod === 'GET') {
+                _operation = 'retrieve device logs for user';
+                Logger.log(Logger.levels.INFO, ['Attempting to', _operation].join(' '));
+                _deviceManager.getLogs(ticket).then((data) => {
+                    resolve(this._processResponse(200, data, _operation));
+                }).catch((err) => {
+                    reject(this._processResponse(err.code, err, _operation));
+                });
             } else if (!(_.isEmpty(event.pathParameters)) && event.pathParameters.hasOwnProperty('deviceid') && event.httpMethod === 'GET') {
                 _operation = ['retrieve device', event.pathParameters.deviceid].join(' ');
                 Logger.log(Logger.levels.INFO, ['Attempting to', _operation].join(' '));

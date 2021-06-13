@@ -18,13 +18,13 @@
 'use strict';
 
 const appVariables = {
-    USER_POOL_ID: '',
-    USER_POOL_CLIENT_ID: '',
-    IDENTITY_POOL_ID: '',
-    COGNITO_IDP_ENDPOINT: '',
-    COGNITO_IDENTITY_ENDPOINT: '',
-    PRINCIPAL_POLICY: '',
-    IOT_ENDPOINT: '',
-    APIG_ENDPOINT: '',
-    REGION: ''
+    IOT_ENDPOINT: 'a1r27cc5m9qloj-ats.iot.ap-southeast-1.amazonaws.com', 
+    COGNITO_IDP_ENDPOINT: '', 
+    COGNITO_IDENTITY_ENDPOINT: '', 
+    APIG_ENDPOINT: 'https://3zpb6wo7kf.execute-api.ap-southeast-1.amazonaws.com/prod', 
+    PRINCIPAL_POLICY: 'IoT-Device-Simulator-IotDeviceSimPrincipalPolicy-12KGXO7GO2DGY', 
+    IDENTITY_POOL_ID: 'ap-southeast-1:8f221432-931c-47c7-ad32-c6ec5a7dc20b', 
+    USER_POOL_ID: 'ap-southeast-1_Zf5aDDeOV', 
+    USER_POOL_CLIENT_ID: '1ld2bqaos4rt0mfmv4mcqjm9rq', 
+    REGION: 'ap-southeast-1'
 };
